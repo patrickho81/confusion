@@ -19,6 +19,45 @@ import {
   SafeAreaView,
 } from "react-navigation";
 import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
+import {
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+  fetchLeaders,
+} from "../redux/ActionCreators";
+
+const MenuShell = () => {
+  return <Menu />;
+};
+const AboutShell = () => {
+  return <About />;
+};
+const ContactShell = () => {
+  return <Contact />;
+};
+const HomeShell = () => {
+  return <Home />;
+};
+const DishdetailShell = () => {
+  return <Dishdetail />;
+};
+
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+    comments: state.comments,
+    promotions: state.promotions,
+    leaders: state.leaders,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
+});
 
 const MenuNavigator = createStackNavigator(
   {
@@ -53,7 +92,7 @@ const MenuNavigator = createStackNavigator(
 
 const HomeNavigator = createStackNavigator(
   {
-    Home: { screen: Home },
+    Home: { screen: HomeShell },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -77,7 +116,7 @@ const HomeNavigator = createStackNavigator(
 );
 const AboutNavigator = createStackNavigator(
   {
-    About: { screen: About },
+    About: { screen: AboutShell },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -101,7 +140,7 @@ const AboutNavigator = createStackNavigator(
 );
 const ContactNavigator = createStackNavigator(
   {
-    Contact: { screen: Contact },
+    Contact: { screen: ContactShell },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -206,6 +245,13 @@ const MainNavigator = createDrawerNavigator(
 );
 
 class Main extends Component {
+  componentDidMount() {
+    this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
+    this.props.fetchLeaders();
+  }
+
   render() {
     return (
       //paddingTop: Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
@@ -245,4 +291,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
