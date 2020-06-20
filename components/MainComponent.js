@@ -4,6 +4,8 @@ import Menu from "./MenuComponent";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import Dishdetail from "./DishdetailComponent";
+import Reservation from "./ReservationComponent";
+
 import {
   View,
   Platform,
@@ -58,6 +60,31 @@ const mapDispatchToProps = (dispatch) => ({
   fetchPromos: () => dispatch(fetchPromos()),
   fetchLeaders: () => dispatch(fetchLeaders()),
 });
+
+const ReservationNavigator = createStackNavigator(
+  {
+    Reservation: { screen: Reservation },
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      headerStyle: {
+        backgroundColor: "#512DA8",
+      },
+      headerTitleStyle: {
+        color: "#fff",
+      },
+      headerTintColor: "#fff",
+      headerLeft: (
+        <Icon
+          name="menu"
+          size={24}
+          iconStyle={{ color: "white" }}
+          onPress={() => navigation.navigate("DrawerToggle")}
+        />
+      ),
+    }),
+  }
+);
 
 const MenuNavigator = createStackNavigator(
   {
@@ -233,6 +260,21 @@ const MainNavigator = createDrawerNavigator(
             type="font-awesome"
             size={22}
             color={tintColor}
+          />
+        ),
+      },
+    },
+    Reservation: {
+      screen: ReservationNavigator,
+      navigationOptions: {
+        title: "Reserve Table",
+        drawerLabel: "Reserve Table",
+        drawerIcon: ({ tintColor, focused }) => (
+          <Icon
+            name="cutlery"
+            type="font-awesome"
+            size={24}
+            iconStyle={{ color: tintColor }}
           />
         ),
       },
